@@ -12,20 +12,21 @@ import Badge from '@material-ui/core/Badge';
 // Styles
 import {Wrapper} from "./App.styles";
 
+import Item from "./Item/Item";
+
 // Types
 export type CartItemType={
-  id:number,
-  category:string,
-  description:string,
-  image:string,
-  price:number,
-  title:string,
-  amount:number
+  id:number;
+  category:string;
+  description:string;
+  image:string;
+  price:number;
+  title:string;
+  amount:number;
 }
 
-const getProducts=async(): Promise <CartItemType[]> =>{
-  return await (await fetch('https://fakestoreapi.com/products')).json()
-}
+const getProducts=async(): Promise <CartItemType[]> =>
+  await (await fetch('https://fakestoreapi.com/products')).json()
 
 
 const App=()=> {
@@ -33,16 +34,22 @@ const App=()=> {
   console.log(data)
 
   const getTotalItems=()=>null;
-  const handleAddToCart=()=>null;
+  const handleAddToCart=(clickedItem:CartItemType)=>null;
   const handleRemoveFromCart=()=>null;
 
   if(isLoading) return <LinearProgress />
   if(error) return <div>Something went wrong</div>
 
   return (
-    <div>
-      <h2>Start Project</h2>
-    </div>
+    <Wrapper>
+      <Grid container spacing={3}>
+        {data?.map(item=>(
+          <Grid item key={item.id} xs={12} sm={4}>
+            <Item item={item} handleAddToCart={handleAddToCart} />
+          </Grid>
+        ))}
+      </Grid>
+    </Wrapper>
   );
 }
 
